@@ -36,8 +36,8 @@ point   =   [.?!;]
 
 /* regles */
 {sep}+          { /* pas d'action */ }
-{pronom}        { return new Symbol(SimpleParserSym.PRONOM); }
-{verbe}         { return new Symbol(SimpleParserSym.VERBE); }
-{adj}           { return new Symbol(SimpleParserSym.ADJECTIF); }
-{point}         { return new Symbol(SimpleParserSym.POINT); }
-.               { return new Symbol(SimpleParserSym.ERROR); }
+{pronom}        { return new Symbol(SimpleParserSym.PRONOM, yyline, yycolumn); }
+{verbe}         { return new Symbol(SimpleParserSym.VERBE, yyline, yycolumn); }
+{adj}           { return new Symbol(SimpleParserSym.ADJECTIF, yyline, yycolumn); }
+{point}         { return new Symbol(SimpleParserSym.POINT, yyline, yycolumn); }
+.               { return new Symbol(SimpleParserSym.ERROR, yyline, yycolumn); }
