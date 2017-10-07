@@ -1,0 +1,37 @@
+/* package et imports */
+package fr.usmb.m1isc.compilation.simple;
+import java_cup.runtime.Symbol;
+
+// nom de la classe a generer
+class SimpleParser;
+
+/* inclusion du code */
+
+action code {: 
+    // pour utilisation dans les actions (classe action)
+:};
+
+
+parser code {:
+    // pour le parser (utile pour customiser le parser)
+:};
+
+ init with {:
+    //	initialisation du parser
+:};
+
+/* symboles terminaux */
+terminal VERBE, PRONOM, ADJECTIF, POINT;
+terminal ERROR;
+
+/* non terminaux */
+non terminal phrase , texte;
+
+/* grammaire */
+
+texte   ::= phrase texte 
+          | phrase ; 
+phrase  ::= PRONOM VERBE ADJECTIF POINT 
+          | error  POINT 
+          ;
+
