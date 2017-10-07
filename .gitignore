@@ -6,3 +6,9 @@
 /gradlew*
 /.classpath
 /.project
+/.externalToolBuilders/
+/.idea/
+/*.iml
+/*.ipr
+/*.iws
+/**/generated-*
