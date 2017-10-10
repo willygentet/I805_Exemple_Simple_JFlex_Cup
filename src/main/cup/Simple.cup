@@ -13,26 +13,7 @@ action code {:
 
 
 parser code {:
-    // pour le parser (redefinition de la methode reportant les erreurs d'analyse)
-    public void report_error(String message, Object info) {
-        String m = "";
-        if (info instanceof java_cup.runtime.Symbol) {
-            Symbol s = ((Symbol) info); 	
-            if (s.left >= 0) {
-                /* Ajoute le numero de ligne  */
-                m = m + "Ligne " + (s.left+1) + " ";
-            }
-            if (s.right >= 0) {
-                /* Ajoute le numero de colonne  */
-                m = m + "Colonne " + (s.right+1) + " ";
-            }
-            if (s.left >=0  || s.right >= 0) {
-                m = m + ": ";			
-            }
-        }
-        m = m + "Erreur de syntaxe";
-        System.out.println(m);
-    }
+    // pour le parser (utile pour customiser le parser)
 :};
 
  init with {:
@@ -50,7 +31,7 @@ non terminal phrase , texte;
 
 texte   ::= phrase texte 
           | phrase ; 
-phrase  ::= PRONOM VERBE ADJECTIF {: System.out.println("OK"); :} POINT 
-          | error POINT 
+phrase  ::= PRONOM VERBE ADJECTIF POINT 
+          | error  POINT 
           ;
 
