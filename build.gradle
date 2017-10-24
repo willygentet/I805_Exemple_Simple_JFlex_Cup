@@ -62,7 +62,7 @@ task cup {
 		sourceSets.main.java.srcDir cup.destdir
 		source.each { File f -> 
 			println "cup source --> ${f}"
-			ant.cup(srcfile:f, destdir:destdir, force:'true', dump:"off")
+			ant.cup(srcfile:f, destdir:destdir, force:'true', dump:"off", locations:'false')
 		}
 	}
 }
