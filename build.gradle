@@ -37,7 +37,7 @@ dependencies {
 // on reutilise la tache ant pour jflex
 task jflex {
     ext.destdir = file("src/main/generated-jflex")
-    ext.source = fileTree ( 'src/main/jflex'){
+    ext.source = fileTree ( 'src/main/'){
         include "**/*.jflex"
         include "**/*.flex"
     }
@@ -54,7 +54,7 @@ task jflex {
 // on reutilise la tache ant pour cup
 task cup {
 	ext.destdir = file("src/main/generated-cup")
-	ext.source = fileTree ('src/main/cup'){
+	ext.source = fileTree ('src/main/'){
 		include "**/*.cup"
 	}	
 	ant.taskdef(name:'cup', classpath:configurations.cupGeneration.asPath,  classname:"java_cup.anttask.CUPTask")
