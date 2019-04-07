@@ -10,6 +10,7 @@ plugins {
     id "java"
     id 'eclipse'
     id 'idea'
+    id "org.sonarqube" version "2.7"
 }
 
 configurations {
@@ -105,6 +106,13 @@ idea {
         inheritOutputDirs = false
         outputDir = sourceSets.main.output.classesDir
         testOutputDir = sourceSets.test.output.classesDir
+    }
+}
+
+sonarqube {
+    properties {
+    	// pas de d'inspection (style/code coverage, etc. sur les classes generees
+        property "sonar.exclusions", "**/generated-*/**"
     }
 }
 
