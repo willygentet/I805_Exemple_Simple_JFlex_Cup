@@ -96,16 +96,16 @@ task ide {
 }
 
 // configuration des IDE
-eclipse.classpath.defaultOutputDir = sourceSets.main.output.classesDir
+// eclipse.classpath.defaultOutputDir = sourceSets.main.output.classesDir
 idea {
     module {
         //sourceDirs += cup.destdir
         generatedSourceDirs += cup.destdir
         //sourceDirs += jflex.destdir
         generatedSourceDirs += jflex.destdir
-        inheritOutputDirs = false
-        outputDir = sourceSets.main.output.classesDir
-        testOutputDir = sourceSets.test.output.classesDir
+        //inheritOutputDirs = false
+        //outputDir = sourceSets.main.output.classesDir
+        //testOutputDir = sourceSets.test.output.classesDir
     }
 }
 
@@ -118,7 +118,7 @@ sonarqube {
 
 sourceSets {
     main {
-        output.classesDir = file('build/classes/main/')
+        // output.classesDir = file('build/classes/main/')
         java {
             srcDir cup.destdir
             srcDir jflex.destdir
