@@ -32,38 +32,43 @@ dependencies {
     // cup : generation de l'analyseur syntaxique
     cupGeneration 'com.github.vbmacher:java-cup:11b-20151001'
     // on a aussi besoin du runtime CUP pour la compilation et l'execution
-    compile 'com.github.vbmacher:java-cup-runtime:11b-20151001'
+    implementation 'com.github.vbmacher:java-cup-runtime:11b-20151001'
 }
 
 // on reutilise la tache ant pour jflex
 task jflex {
-    ext.destdir = file("src/main/generated-jflex")
-    ext.source = fileTree ( 'src/main/'){
+    ext.source = fileTree ( 'src/main/jflex'){
         include "**/*.jflex"
         include "**/*.flex"
     }
+    ext.destdir = file("src/main/generated-jflex")
+    ext.noback = 'true'
+    ext.verbose = 'on'
     ant.taskdef(name:'jflex', classpath:configurations.jflexGeneration.asPath,  classname:"jflex.anttask.JFlexTask")
     doLast {
         sourceSets.main.java.srcDir jflex.destdir
         source.each { File f -> 
             println "jflex source --> ${f}"
-            ant.jflex(file:f, destdir:destdir, nobak:"true", verbose:"on")
+            ant.jflex(file:f, destdir:destdir, nobak:noback, verbose:verbose)
         }
     }
 }
 
 // on reutilise la tache ant pour cup
 task cup {
-	ext.destdir = file("src/main/generated-cup")
-	ext.source = fileTree ('src/main/'){
+	ext.source = fileTree ('src/main/cup'){
 		include "**/*.cup"
 	}	
+	ext.destdir = file("src/main/generated-cup")
+    ext.force = 'true'
+    ext.dump = 'off'
+    ext.locations = 'false'
 	ant.taskdef(name:'cup', classpath:configurations.cupGeneration.asPath,  classname:"java_cup.anttask.CUPTask")
 	doLast {
 		sourceSets.main.java.srcDir cup.destdir
 		source.each { File f -> 
 			println "cup source --> ${f}"
-			ant.cup(srcfile:f, destdir:destdir, force:'true', dump:"off", locations:'false')
+			ant.cup(srcfile:f, destdir:destdir, force:force, dump:dump, locations:locations)
 		}
 	}
 }
@@ -77,7 +82,7 @@ compileJava.dependsOn cup, jflex
 
 jar {
     from {
-        configurations.compile.collect {
+        configurations.runtimeClasspath.collect {
             it.isDirectory() ? it : zipTree(it)
         }
     }
@@ -96,16 +101,10 @@ task ide {
 }
 
 // configuration des IDE
-// eclipse.classpath.defaultOutputDir = sourceSets.main.output.classesDir
 idea {
     module {
-        //sourceDirs += cup.destdir
         generatedSourceDirs += cup.destdir
-        //sourceDirs += jflex.destdir
         generatedSourceDirs += jflex.destdir
-        //inheritOutputDirs = false
-        //outputDir = sourceSets.main.output.classesDir
-        //testOutputDir = sourceSets.test.output.classesDir
     }
 }
 
@@ -118,10 +117,11 @@ sonarqube {
 
 sourceSets {
     main {
-        // output.classesDir = file('build/classes/main/')
         java {
             srcDir cup.destdir
             srcDir jflex.destdir
         }
     }
 }
+
+task stage(dependsOn: 'build')
