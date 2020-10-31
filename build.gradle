@@ -36,7 +36,7 @@ dependencies {
 }
 
 // on reutilise la tache ant pour jflex
-task jflex {
+task jflex (group: 'build') {
     ext.source = fileTree ( 'src/main/jflex'){
         include "**/*.jflex"
         include "**/*.flex"
@@ -44,6 +44,11 @@ task jflex {
     ext.destdir = file("src/main/generated-jflex")
     ext.noback = 'true'
     ext.verbose = 'on'
+
+	inputs.property('noback', jflex.noback)
+	inputs.files(jflex.source)
+	outputs.dir(jflex.destdir)
+
     ant.taskdef(name:'jflex', classpath:configurations.jflexGeneration.asPath,  classname:"jflex.anttask.JFlexTask")
     doLast {
         sourceSets.main.java.srcDir jflex.destdir
@@ -55,7 +60,7 @@ task jflex {
 }
 
 // on reutilise la tache ant pour cup
-task cup {
+task cup (group: 'build') {
 	ext.source = fileTree ('src/main/cup'){
 		include "**/*.cup"
 	}	
@@ -63,6 +68,11 @@ task cup {
     ext.force = 'true'
     ext.dump = 'off'
     ext.locations = 'false'
+       
+	inputs.property('locations', cup.locations)
+	inputs.files(cup.source)
+	outputs.dir(cup.destdir)
+    
 	ant.taskdef(name:'cup', classpath:configurations.cupGeneration.asPath,  classname:"java_cup.anttask.CUPTask")
 	doLast {
 		sourceSets.main.java.srcDir cup.destdir
