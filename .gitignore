@@ -1,9 +1,7 @@
 /.gradle/
-/gradle/
 /bin/
 /build/
 /.settings/
-/gradlew*
 /.classpath
 /.project
 /.externalToolBuilders/
@@ -12,3 +10,5 @@
 /*.ipr
 /*.iws
 /**/generated-*
+#/gradlew*
+#/gradle/
