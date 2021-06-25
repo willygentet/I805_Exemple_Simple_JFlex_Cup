@@ -26,7 +26,7 @@ repositories {
 
 dependencies {
     // jflex : generation de l'analyseur lexical
-    jflexGeneration 'de.jflex:jflex:1.6.1'
+    jflexGeneration 'de.jflex:jflex:1.8.1'
     // cup : generation de l'analyseur syntaxique
     cupGeneration 'com.github.vbmacher:java-cup:11b-20160615-1'
     // on a aussi besoin du runtime CUP pour la compilation et l'execution
@@ -42,8 +42,10 @@ task jflex (group: 'build') {
     ext.destdir = file("src/main/generated-jflex")
     ext.noback = 'true'
     ext.verbose = 'on'
+    ext.encoding = 'UTF-8'
 
 	inputs.property('noback', jflex.noback)
+    inputs.property('encoding', jflex.encoding)
 	inputs.files(jflex.source)
 	outputs.dir(jflex.destdir)
 
@@ -52,7 +54,7 @@ task jflex (group: 'build') {
         sourceSets.main.java.srcDir jflex.destdir
         source.each { File f -> 
             println "jflex source --> ${f}"
-            ant.jflex(file:f, destdir:destdir, nobak:noback, verbose:verbose)
+            ant.jflex(file:f, destdir:destdir, nobak:noback, verbose:verbose, encoding:jflex.encoding)
         }
     }
 }
