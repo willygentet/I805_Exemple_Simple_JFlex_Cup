@@ -1,4 +1,4 @@
-image: gradle:4.6-jdk8
+image: gradle:7.1-jdk11
 stages:
   - build
   - check
@@ -8,54 +8,15 @@ build:
   script:
     - gradle build
 
-# sonarqube analysis for long-lived branch
 checksource:
   stage: check
   script:
     - gradle sonarqube
-                    -Dsonar.host.url=$SONAR_URL -Dsonar.projectKey=$CI_PROJECT_NAME -Dsonar.projectName=$CI_PROJECT_NAME -Dsonar.login=$SONAR_TOKEN 
-                    -Dsonar.gitlab.url=$GITLAB_URL -Dsonar.gitlab.project_id=$CI_PROJECT_ID -Dsonar.gitlab.user_token=$SONAR_PLUGIN_TOKEN
-                    -Dsonar.gitlab.commit_sha=$CI_COMMIT_SHA -Dsonar.gitlab.ref_name=$CI_COMMIT_REF_NAME
-                    -Dsonar.branch.name=$CI_COMMIT_REF_NAME -Dsonar.branch.target=master
+                    -Dsonar.host.url=$SONAR_URL -Dsonar.login=$SONAR_TOKEN 
+                    -Dsonar.projectKey=$CI_PROJECT_NAME -Dsonar.projectName=$CI_PROJECT_NAME 
+                    -Dsonar.gitlab.url=$GITLAB_URL -Dsonar.gitlab.user_token=$SONAR_PLUGIN_TOKEN 
+                    -Dsonar.gitlab.project_id=$CI_PROJECT_ID -Dsonar.gitlab.ref_name=$CI_COMMIT_REF_NAME -Dsonar.gitlab.commit_sha=$CI_COMMIT_SHA 
+#                    -Dsonar.branch.name=$CI_COMMIT_REF_NAME
   only:
-    - master
-    - develop
-    - '/^support\/.*/'
-    - '/^release\/.*/'
-    - tags
-
-# sonarqube analysis for short-lived branch
-checksource-dev:
-  stage: check
-  script:
-    - gradle sonarqube
-                    -Dsonar.host.url=$SONAR_URL -Dsonar.projectKey=$CI_PROJECT_NAME -Dsonar.projectName=$CI_PROJECT_NAME -Dsonar.login=$SONAR_TOKEN 
-                    -Dsonar.gitlab.url=$GITLAB_URL -Dsonar.gitlab.project_id=$CI_PROJECT_ID -Dsonar.gitlab.user_token=$SONAR_PLUGIN_TOKEN
-                    -Dsonar.gitlab.commit_sha=$CI_COMMIT_SHA -Dsonar.gitlab.ref_name=$CI_COMMIT_REF_NAME
-                    -Dsonar.branch.name=$CI_COMMIT_REF_NAME -Dsonar.branch.target=develop 
-  only:
-    - '/^feature\/.*/'
-
-# sonarqube preview analysis from master branch
-checksource-hotfix:
-  stage: check
-  script:
-    - gradle sonarqube
-                    -Dsonar.host.url=$SONAR_URL -Dsonar.projectKey=$CI_PROJECT_NAME -Dsonar.projectName=$CI_PROJECT_NAME -Dsonar.login=$SONAR_TOKEN 
-                    -Dsonar.gitlab.url=$GITLAB_URL -Dsonar.gitlab.project_id=$CI_PROJECT_ID -Dsonar.gitlab.user_token=$SONAR_PLUGIN_TOKEN
-                    -Dsonar.gitlab.commit_sha=$CI_COMMIT_SHA -Dsonar.gitlab.ref_name=$CI_COMMIT_REF_NAME
-                    -Dsonar.analysis.mode=preview
-  only:
-    - '/^hotfix\/.*/'
-
-# sonarqube preview analysis from master branch
-checksource-bugfix:
-  stage: check
-  script:
-    - gradle sonarqube
-                    -Dsonar.host.url=$SONAR_URL -Dsonar.projectKey=$CI_PROJECT_NAME -Dsonar.projectName=$CI_PROJECT_NAME -Dsonar.login=$SONAR_TOKEN 
-                    -Dsonar.gitlab.url=$GITLAB_URL -Dsonar.gitlab.project_id=$CI_PROJECT_ID -Dsonar.gitlab.user_token=$SONAR_PLUGIN_TOKEN
-                    -Dsonar.gitlab.commit_sha=$CI_COMMIT_SHA -Dsonar.gitlab.ref_name=$CI_COMMIT_REF_NAME
-                    -Dsonar.analysis.mode=preview -Dsonar.branch.name=develop
-  only:
-    - '/^bugfix\/.*/'
+    variables: 
+      - $SONAR_ANALYSIS == "enabled" 
