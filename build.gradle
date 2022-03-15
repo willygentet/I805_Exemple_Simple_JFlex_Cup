@@ -26,7 +26,7 @@ repositories {
 
 dependencies {
     // jflex : generation de l'analyseur lexical
-    jflexGeneration 'de.jflex:jflex:1.8.1'
+    jflexGeneration 'de.jflex:jflex:1.8.2'
     // cup : generation de l'analyseur syntaxique
     cupGeneration 'com.github.vbmacher:java-cup:11b-20160615-1'
     // on a aussi besoin du runtime CUP pour la compilation et l'execution
