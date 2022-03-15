@@ -25,7 +25,7 @@ import java_cup.runtime.Symbol;
 /* definitions regulieres */
 il      =   "Il"|"il"
 elle    =   "Elle"|"elle" 
-pronom 	=   {il}|{elle}
+pronom  =   {il}|{elle}
 verbe   =   "est"|"boit"
 adj     =   "vite"|"beau"|"belle"|"bien"|"chaud"
 sep     =   \s

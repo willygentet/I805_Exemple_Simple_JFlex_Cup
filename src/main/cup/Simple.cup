@@ -17,7 +17,7 @@ parser code {:
     public void report_error(String message, Object info) {
         String m = "";
         if (info instanceof java_cup.runtime.Symbol) {
-            Symbol s = ((Symbol) info); 	
+            Symbol s = ((Symbol) info);     
             if (s.left >= 0) {
                 /* Ajoute le numero de ligne  */
                 m = m + "Ligne " + (s.left+1) + " ";
@@ -27,7 +27,7 @@ parser code {:
                 m = m + "Colonne " + (s.right+1) + " ";
             }
             if (s.left >=0  || s.right >= 0) {
-                m = m + ": ";			
+                m = m + ": ";            
             }
         }
         m = m + "Erreur de syntaxe";
@@ -36,7 +36,7 @@ parser code {:
 :};
 
  init with {:
-    //	initialisation du parser
+    //    initialisation du parser
 :};
 
 /* symboles terminaux */
