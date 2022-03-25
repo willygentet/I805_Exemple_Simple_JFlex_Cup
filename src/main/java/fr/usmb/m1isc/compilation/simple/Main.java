@@ -13,6 +13,6 @@ public class Main {
             lexer = new SimpleLexer(new InputStreamReader(System.in));
         @SuppressWarnings("deprecation")
         SimpleParser p = new SimpleParser(lexer);
-        p.parse();
+        System.out.println("Resultat : " + p.parse());;
     }
 }

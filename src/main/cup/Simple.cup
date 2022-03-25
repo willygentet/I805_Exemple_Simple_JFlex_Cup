@@ -40,13 +40,24 @@ parser code {:
 :};
 
 /* symboles terminaux */
-terminal NUMBER, END;
-terminal ERROR;
+terminal PLUS, LPAR, RPAR, END;
+terminal Integer NUMBER;
 
 /* non terminaux */
-non terminal expr;
+non terminal seq_expressions, expression;
+non terminal Integer expr;
 
 /* grammaire */
 
-expr      ::=  NUMBER END;
+seq_expressions::= expression seq_expressions | expression ;
+expression::= expr:e {: System.out.println
+ ("Eval="+e.intValue()); :} END |
+ error END ;
+ expr::=expr:e1 PLUS expr:e2
+  {: RESULT=new Integer(e1.intValue()+e2.intValue()); :}
+ | NUMBER:n {: RESULT=n; :}
+ | LPAR expr:e RPAR {: RESULT=e; :} ;
+
+
+
 

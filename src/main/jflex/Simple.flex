@@ -25,16 +25,16 @@ import java.util.LinkedList;
 %}
 
 /* definitions regulieres */
-/*lpar = "("
-rpar = ")"
-plus = "+"
+/*
 minus = "-"
 div = "/"
 mult = "*"
 op = {plus}|{minus}|{div}|{mult}*/
+lpar = "("
+rpar = ")"
 number = [0-9]+
-sep = [[:space:]\n]+
-//expr = {number}|{lpar}{sep}*{number}{sep}*{op}{number}{sep}*{rpar}|{number}{sep}*{op}{sep}*{number}
+plus = "+"
+sep = \s
 end = ";"
 
 
@@ -43,7 +43,10 @@ end = ";"
 
 /* regles */
 {sep}+          { /* pas d'action */ }
-{number}        { System.out.println(yytext()); return new Symbol(SimpleParserSym.NUMBER, yyline, yycolumn); }
+{number}        { return new Symbol(SimpleParserSym.NUMBER, yyline, yycolumn, new Integer(yytext())); }
+{plus}          { return new Symbol(SimpleParserSym.PLUS, yyline, yycolumn); }
+{lpar}          { return new Symbol(SimpleParserSym.LPAR, yyline, yycolumn); }
+{rpar}          { return new Symbol(SimpleParserSym.RPAR, yyline, yycolumn); }
 {end}           { return new Symbol(SimpleParserSym.END); }
 .               { return new Symbol(SimpleParserSym.ERROR, yyline, yycolumn); }
 
