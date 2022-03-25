@@ -40,17 +40,13 @@ parser code {:
 :};
 
 /* symboles terminaux */
-terminal VERBE, PRONOM, ADJECTIF, POINT;
+terminal NUMBER, END;
 terminal ERROR;
 
 /* non terminaux */
-non terminal phrase , texte;
+non terminal expr;
 
 /* grammaire */
 
-texte   ::= phrase texte 
-          | phrase ; 
-phrase  ::= PRONOM VERBE ADJECTIF {: System.out.println("OK"); :} POINT 
-          | error POINT 
-          ;
+expr      ::=  NUMBER END;
 

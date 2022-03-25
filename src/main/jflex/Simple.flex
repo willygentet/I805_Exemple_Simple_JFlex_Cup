@@ -1,6 +1,7 @@
 /* --------------------------Section de Code Utilisateur---------------------*/
 package fr.usmb.m1isc.compilation.simple;
 import java_cup.runtime.Symbol;
+import java.util.LinkedList;
 
 %%
 
@@ -19,25 +20,30 @@ import java_cup.runtime.Symbol;
 
 // code a ajouter dans la classe produite
 %{
-
+    private LinkedList<Object> pileNum = new LinkedList<>();
+    private LinkedList<Object> pileOp = new LinkedList<>();
 %}
 
 /* definitions regulieres */
-il      =   "Il"|"il"
-elle    =   "Elle"|"elle" 
-pronom  =   {il}|{elle}
-verbe   =   "est"|"boit"
-adj     =   "vite"|"beau"|"belle"|"bien"|"chaud"
-sep     =   \s
-point   =   [.?!;]
+/*lpar = "("
+rpar = ")"
+plus = "+"
+minus = "-"
+div = "/"
+mult = "*"
+op = {plus}|{minus}|{div}|{mult}*/
+number = [0-9]+
+sep = [[:space:]\n]+
+//expr = {number}|{lpar}{sep}*{number}{sep}*{op}{number}{sep}*{rpar}|{number}{sep}*{op}{sep}*{number}
+end = ";"
+
 
 %% 
 /* ------------------------Section des Regles Lexicales----------------------*/
 
 /* regles */
 {sep}+          { /* pas d'action */ }
-{pronom}        { return new Symbol(SimpleParserSym.PRONOM, yyline, yycolumn); }
-{verbe}         { return new Symbol(SimpleParserSym.VERBE, yyline, yycolumn); }
-{adj}           { return new Symbol(SimpleParserSym.ADJECTIF, yyline, yycolumn); }
-{point}         { return new Symbol(SimpleParserSym.POINT, yyline, yycolumn); }
+{number}        { System.out.println(yytext()); return new Symbol(SimpleParserSym.NUMBER, yyline, yycolumn); }
+{end}           { return new Symbol(SimpleParserSym.END); }
 .               { return new Symbol(SimpleParserSym.ERROR, yyline, yycolumn); }
+

@@ -2,6 +2,7 @@ package fr.usmb.m1isc.compilation.simple;
 
 import java.io.FileReader;
 import java.io.InputStreamReader;
+import java.util.LinkedList;
 
 public class Main {
     public static void main(String[] args) throws Exception {
