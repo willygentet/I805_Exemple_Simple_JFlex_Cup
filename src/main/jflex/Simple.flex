@@ -20,21 +20,18 @@ import java.util.LinkedList;
 
 // code a ajouter dans la classe produite
 %{
-    private LinkedList<Object> pileNum = new LinkedList<>();
-    private LinkedList<Object> pileOp = new LinkedList<>();
 %}
 
 /* definitions regulieres */
-/*
+lpar = "("
+rpar = ")"
+number = -?[0-9]+
+plus = "+"
 minus = "-"
 div = "/"
 mult = "*"
-op = {plus}|{minus}|{div}|{mult}*/
-lpar = "("
-rpar = ")"
-number = [0-9]+
-plus = "+"
-sep = \s
+mod = "mod"
+sep = \n|\r|\r\n
 end = ";"
 
 
@@ -42,11 +39,15 @@ end = ";"
 /* ------------------------Section des Regles Lexicales----------------------*/
 
 /* regles */
-{sep}+          { /* pas d'action */ }
-{number}        { return new Symbol(SimpleParserSym.NUMBER, yyline, yycolumn, new Integer(yytext())); }
+{sep}           { /* pas d'action */ }
+{number}        { return new Symbol(SimpleParserSym.NUMBER, yyline, yycolumn, Integer.valueOf(yytext())); }
 {plus}          { return new Symbol(SimpleParserSym.PLUS, yyline, yycolumn); }
+{minus}         { return new Symbol(SimpleParserSym.MINUS, yyline, yycolumn); }
+{div}           { return new Symbol(SimpleParserSym.DIV, yyline, yycolumn); }
+{mult}          { return new Symbol(SimpleParserSym.MULT, yyline, yycolumn); }
+{mod}           { return new Symbol(SimpleParserSym.MOD, yyline, yycolumn); }
 {lpar}          { return new Symbol(SimpleParserSym.LPAR, yyline, yycolumn); }
 {rpar}          { return new Symbol(SimpleParserSym.RPAR, yyline, yycolumn); }
-{end}           { return new Symbol(SimpleParserSym.END); }
-.               { return new Symbol(SimpleParserSym.ERROR, yyline, yycolumn); }
+{end}           { return new Symbol(SimpleParserSym.END, yyline, yycolumn); }
+.               { ; /* on ne fait rien */ }
 

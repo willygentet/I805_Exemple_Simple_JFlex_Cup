@@ -40,12 +40,16 @@ parser code {:
 :};
 
 /* symboles terminaux */
-terminal PLUS, LPAR, RPAR, END;
+terminal PLUS, MINUS, DIV, MULT, MOD, LPAR, RPAR, END;
 terminal Integer NUMBER;
 
 /* non terminaux */
 non terminal seq_expressions, expression;
 non terminal Integer expr;
+
+/* Precedences */
+precedence left PLUS, MINUS;
+precedence left MULT, DIV, MOD;
 
 /* grammaire */
 
@@ -53,10 +57,29 @@ seq_expressions::= expression seq_expressions | expression ;
 expression::= expr:e {: System.out.println
  ("Eval="+e.intValue()); :} END |
  error END ;
- expr::=expr:e1 PLUS expr:e2
-  {: RESULT=new Integer(e1.intValue()+e2.intValue()); :}
- | NUMBER:n {: RESULT=n; :}
- | LPAR expr:e RPAR {: RESULT=e; :} ;
+expr::=expr:e1 PLUS expr:e2
+ {: RESULT=new Integer(e1.intValue()+e2.intValue()); :}
+|
+ expr:e1 MINUS expr:e2
+ {: RESULT=new Integer(e1.intValue()-e2.intValue()); :}
+|
+ expr:e1 DIV expr:e2
+ {: if(e2.intValue() != 0 ) {
+        RESULT=new Integer(e1.intValue()/e2.intValue());
+    } else {
+        System.out.println("divide by 0 error");
+        RESULT = 0;
+    }
+  :}
+|
+ expr:e1 MULT expr:e2
+ {: RESULT=new Integer(e1.intValue()*e2.intValue()); :}
+ |
+  expr:e1 MOD expr:e2
+  {: RESULT=new Integer(e1.intValue()%e2.intValue()); :}
+| NUMBER:n {: RESULT=n; :}
+| LPAR expr:e RPAR {: RESULT=e; :} ;
+
 
 
 
